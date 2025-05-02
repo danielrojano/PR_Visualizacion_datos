@@ -1,19 +1,25 @@
-from modules.data_loader import load_club_data
-from modules.data_exploration import explore_club_data
-from modules.club_scraper import scrape_all_club_data
-from modules.player_scraper import scrape_players_from_all_categories
+# main.py
+
+from src.scraper_players import scrape_players
+from src.scraper_clubs import scrape_clubs
 
 def main():
-    df_clubs = load_club_data("data/clubs.xlsx")
-    if df_clubs is None:
-        return
+    jornada = 20  # Puedes cambiar el número de jornada aquí
+    print(f"\n=== SCRAPING FÚTBOL SALA - JORNADA {jornada} ===\n")
 
-    explore_club_data(df_clubs)
+    try:
+        print("📦 Scraping de jugadores...")
+        scrape_players(jornada=jornada)
+    except Exception as e:
+        print(f"❌ Error durante el scraping de jugadores: {e}")
 
-    df_scraped = scrape_all_club_data(df_clubs)
-    df_scraped.to_excel("outputs/scraped_data.xlsx", index=False)
+    try:
+        print("\n🏟️ Scraping de clubes...")
+        scrape_clubs()
+    except Exception as e:
+        print(f"❌ Error durante el scraping de clubes: {e}")
 
-    scrape_players_from_all_categories()
+    print("\n🎉 Todo el proceso ha finalizado.")
 
 if __name__ == "__main__":
     main()
