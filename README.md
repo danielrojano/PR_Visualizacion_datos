@@ -1,89 +1,87 @@
-# ⚽ Futsal Scraper - Federació Catalana de Futbol
+# 📊 Scraper Fútbol Sala FCF
 
-Este proyecto permite realizar un scraping automatizado de **datos de clubes y jugadores** de fútbol sala desde la página oficial de la [Federació Catalana de Futbol (www.fcf.cat)](https://www.fcf.cat). El objetivo es recopilar información útil como contacto de clubes, ubicación, y datos de jugadores por categoría y jornada.
+Este proyecto permite obtener información detallada de **jugadores** y **clubes** de fútbol sala desde la web oficial de la [Federació Catalana de Futbol (FCF)](https://www.fcf.cat/). Extrae datos desde todas las combinaciones posibles de categoría, división y grupo.
 
----
-
-## 📁 Estructura del proyecto
+## 📁 Estructura del Proyecto
 
 ```
 futsal_scraper/
-├── main.py                        # Script principal
-├── modules/                      # Módulos organizados por funcionalidad
-│   ├── data_loader.py            # Carga de archivo Excel de clubes
-│   ├── data_exploration.py       # Análisis exploratorio básico del archivo
-│   ├── club_scraper.py           # Scraping de datos de clubes
-│   ├── player_scraper.py         # Scraping de datos de jugadores (por categoría y grupo)
-│   └── utils.py                  # Utilidades generales (futuro uso)
+├── main.py
+├── requirements.txt
+├── src/
+│   ├── scraper_players.py
+│   └── scraper_clubs.py
 ├── data/
-│   └── clubs.xlsx                # Archivo Excel de entrada con links de clubes
-├── outputs/
-│   └── scraped_data.xlsx         # Archivo de salida con datos scrapeados
-└── requirements.txt              # Librerías necesarias
+│   ├── jugadores_futsal_todas_ligas_jornadaXX.xlsx
+│   └── clubes_futsal.xlsx
+└── README.md
 ```
 
----
+## 🔍 ¿Qué hace el scraper?
 
-## 🚀 ¿Qué hace cada parte?
+### `scraper_players.py`
+- Itera por cada categoría, división y grupo posibles.
+- Accede a la jornada indicada (por defecto jornada 20).
+- Extrae datos de los jugadores que han disputado partidos:
+  - Nombre, apellidos, equipo
+  - Categoría, división y grupo
+  - Goles, partidos jugados
+  - Promedio de goles por partido
+- Guarda los datos en un archivo Excel:
+  - `data/jugadores_futsal_todas_ligas_jornadaXX.xlsx`
 
-- `main.py`: Orquesta el proceso completo:
-  - Carga el Excel de clubes.
-  - Muestra estadísticas del archivo.
-  - Hace scraping de los datos de contacto del club.
-  - Lanza scraping de datos de jugadores (por categoría, división y grupo).
+### `scraper_clubs.py`
+- Extrae la información de clubes registrados en la FCF.
+- Obtiene:
+  - Delegación
+  - Responsable
+  - Domicilio
+  - Código Postal
+  - Fax
+  - Teléfono
+- Guarda los resultados en un archivo Excel integrado con clubs.xlsx:
+  - `data/clubes_futsal.xlsx`
 
-- `modules/club_scraper.py`: Extrae datos como:
-  - Delegació, Responsable, Domicili, Codi Postal, Fax, Correu Electrònic.
+## ⚙️ Requisitos
 
-- `modules/player_scraper.py`: Extrae URLs de jornadas y actas de partidos para múltiples combinaciones:
-  - Categorías: Aleví, Infantil, Cadet, Juvenil, Senior.
-  - Divisiones: Honor, Preferent, Primera, Segona, Tercera.
-  - Grupos: Grup-únic, BCN-gr-1 a BCN-gr-16.
-
----
-
-## 🛠️ Requisitos
-
-Python 3.8 o superior.
-
-Instala los paquetes necesarios:
+Instala las dependencias necesarias ejecutando:
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+Contenido de `requirements.txt`:
 
-## 📦 Ejecución
+```
+beautifulsoup4
+pandas
+requests
+openpyxl
+```
 
-Asegúrate de tener `data/clubs.xlsx` con una columna llamada `Link` que contenga las URLs a las páginas de clubes de la FCF.
+## ▶️ Cómo usar
 
-Después, ejecuta:
+Ejecuta el archivo principal `main.py` para iniciar todo el proceso de scraping:
 
 ```bash
 python main.py
 ```
 
-Los resultados se guardarán automáticamente en `outputs/scraped_data.xlsx`.
+> 🛠️ El número de jornada puede modificarse fácilmente dentro del archivo `main.py`.
 
----
+## 📂 Archivos generados
 
-## 🧠 Notas
+Al finalizar, se generarán automáticamente los siguientes archivos en la carpeta `/data`:
 
-- Las solicitudes están limitadas a 1 cada 0.3 segundos por cortesía con el servidor web.
-- Si un jugador tiene solo un nombre, no se intenta dividirlo en apellidos.
-- El scraping de jugadores actualmente lista los enlaces de jornadas disponibles, pero puedes expandirlo para recolectar más estadísticas u otros datos por acta.
+- `jugadores_futsal_todas_ligas_jornada20.xlsx`
+- `clubes_futsal.xlsx`
 
----
+## 📌 Notas adicionales
 
-## 📄 Licencia
+- El script respeta tiempos de espera (`time.sleep`) para no saturar el servidor de la FCF.
+- Se eliminan duplicados antes de exportar.
+- Los nombres de los jugadores se formatean correctamente aunque solo contengan un nombre.
 
-MIT License. Proyecto educativo y sin ánimo de lucro.
+## 🧑‍💻 Autor
 
----
-
-## ✍️ Autor
-
-**Daniel Rojano Naranjo**  
-Proyecto para recopilación automatizada de datos de fútbol sala en Cataluña.
-
+Desarrollado por Daniel Rojano Naranjo.
