@@ -31,7 +31,12 @@ futsal_scraper/
   - `data/jugadores_futsal_todas_ligas_jornadaXX.xlsx`
 
 ### `scraper_clubs.py`
-- Extrae la información de clubes registrados en la FCF.
+- Extrae la información de clubes registrados en la FCF. A partir de clubs.xlsx donde ya tenemos la siguiente información recopilada de la página de la deferación:
+  - Nombre
+  - Código
+  - Localidad
+  - Provincia
+  - Link
 - Obtiene:
   - Delegación
   - Responsable
